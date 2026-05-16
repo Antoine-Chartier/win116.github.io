@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="../favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=PT+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+
+  <title>Gym Tracker - Secret Page</title>
+  <style>
+    .secret-container {
+      margin-top: 100px;
+      padding: 40px;
+      border: 1px solid #0389ff;
+      border-radius: 8px;
+    }
+  </style>
+      <style>
+        :root {
+            --primary: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        /* Navigation des jours */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Contenu des jours */
+        .day-content {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        /* Tableaux */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            white-space: nowrap;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        /* Input pour les poids */
+        .weight-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .notes {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+
+        /* Calendrier */
+        .calendar-section {
+            margin-top: 30px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            
+        }
+
+        .calendar-header button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .calendar-header button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: black;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            color: #64748b;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            background-color: #f1f5f9;
+            border-color: var(--primary);
+        }
+
+        .calendar-day.other-month {
+            color: #cbd5e1;
+            background-color: #f8fafc;
+            cursor: default;
+        }
+
+        .calendar-day.other-month:hover {
+            background-color: #f8fafc;
+            border-color: var(--border);
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .calendar-day-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .calendar-day-label.jour1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .calendar-day-label.jour2 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .calendar-day-label.jour3 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-color.jour1 {
+            background-color: #dbeafe;
+            border: 1px solid #1e40af;
+        }
+
+        .legend-color.jour2 {
+            background-color: #dbeafe;
+            border: 1px solid #1e40af;
+        }
+
+        .legend-color.jour3 {
+            background-color: #dbeafe;
+            border: 1px solid #1e40af;
+        }
+
+        .add-workout-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .add-workout-section label {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .add-workout-section select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .add-workout-section button {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .add-workout-section button:hover {
+            background-color: #059669;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .day-content { padding: 10px; }
+            th, td { padding: 8px; font-size: 0.9rem; }
+            .weight-input { width: 60px; }
+            .calendar-grid { gap: 3px; }
+            .calendar-day { padding: 5px; font-size: 0.85rem; }
+            .calendar-day-label { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="100">
+
+  <nav class="site-nav dark mb-5 site-navbar-target">
+    <div class="container">
+      <div class="site-navigation">
+        <a href="../index.html" class="logo m-0">Antoine<span class="text-primary">.</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5 ">
+    <h1 class="">Programme d'entraînement</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showDay(1)">Jour 1</button>
+        <button class="tab-btn" onclick="showDay(2)">Jour 2</button>
+        <button class="tab-btn" onclick="showDay(3)">Jour 3</button>
+    </div>
+
+    <div id="day1" class="day-content active">
+        <h2>Échauffements</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th># Exercice</th>
+                        <th>Set</th>
+                        <th>Rep</th>
+                        <th>Tempo</th>
+                        <th>Repos</th>
+                        <th>Poids (lbs/kg)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-day1">
+                    </tbody>
+            </table>
+        </div>
+        <div class="notes">
+            * EMOM peut être appliqué<br>
+            * Cardio modéré de 10 à 20 minutes peut être ajouté à la fin.
+        </div>
+    </div>
+
+    <div id="day2" class="day-content">
+        <h2>Échauffements</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th># Exercice</th>
+                        <th>Set</th>
+                        <th>Rep</th>
+                        <th>Tempo</th>
+                        <th>Repos</th>
+                        <th>Poids (lbs/kg)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-day2">
+                    </tbody>
+            </table>
+        </div>
+        <div class="notes">
+            * Un cardio très modéré de 10-20 minutes peut être ajouté pour des fins de récupération.
+        </div>
+    </div>
+
+    <div id="day3" class="day-content">
+        <h2>Échauffements</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th># Exercice</th>
+                        <th>Set</th>
+                        <th>Rep</th>
+                        <th>Tempo</th>
+                        <th>Repos</th>
+                        <th>Poids (lbs/kg)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-day3">
+                    </tbody>
+            </table>
+        </div>
+        <div class="notes">
+            * Cardio au choix
+        </div>
+    </div>
+
+    <!-- Calendrier de suivi -->
+    <div class="calendar-section">
+        <div class="calendar-header">
+            <button onclick="previousMonth()">&lt; Précédent</button>
+            <h2 id="calendar-title"></h2>
+            <button onclick="nextMonth()">Suivant &gt;</button>
+        </div>
+
+        <div class="add-workout-section">
+            <label for="workout-date">Ajouter un jour d'entraînement:</label>
+            <input type="date" id="workout-date">
+            <select id="workout-day-select">
+                <option value="">-- Sélectionner un jour --</option>
+                <option value="jour1">Jour 1</option>
+                <option value="jour2">Jour 2</option>
+                <option value="jour3">Jour 3</option>
+            </select>
+            <button onclick="addWorkout()">Ajouter</button>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid"></div>
+
+        <div class="calendar-legend">
+            <div class="legend-item">
+                <div class="legend-color jour1"></div>
+                <span>Jour 1 complété</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color jour2"></div>
+                <span>Jour 2 complété</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color jour3"></div>
+                <span>Jour 3 complété</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Données des exercices (tirées de tes feuilles)
+    const workouts = {
+        day1: [
+            { id: "j1_1", name: "A1 Kettlebell dead lift", set: "4-12", rep: "4-6", tempo: "2111", repos: "0-10" },
+            { id: "j1_2", name: "A2 Goblet squat (deep)", set: "4-12", rep: "4-6", tempo: "2111", repos: "0-10" },
+            { id: "j1_3", name: "A3 One arm kettlebell row", set: "4-12", rep: "4-6/c", tempo: "211", repos: "45-90" },
+            { id: "j1_4", name: "B Hack squat", set: "4-6", rep: "6-8", tempo: "3111", repos: "60-90" },
+            { id: "j1_5", name: "C Hanging knee raise", set: "3-5", rep: "6-10", tempo: "2111", repos: "45-90" }
+        ],
+        day2: [
+            { id: "j2_1", name: "A1 Dips ou Assisted dips", set: "3-5", rep: "4-6", tempo: "3111", repos: "30-60" },
+            { id: "j2_2", name: "A2 Pull up ou assisted pull up", set: "3-5", rep: "4-6", tempo: "3111", repos: "30-60" },
+            { id: "j2_3", name: "B Leg curl (seated or lying)", set: "4-6", rep: "6-8", tempo: "3111", repos: "60-90" },
+            { id: "j2_4", name: "C Pallof press", set: "3-5", rep: "4-6/c", tempo: "1112", repos: "45-60" },
+            { id: "j2_5", name: "* D Sled push", set: "2-4", rep: "ARx2", tempo: "-", repos: "45-90" }
+        ],
+        day3: [
+            { id: "j3_1", name: "A Standing, overhead, dumbbell press", set: "3-5", rep: "4-6/c", tempo: "3111", repos: "45-90", defaultWeight: "15" },
+            { id: "j3_2", name: "B1 Inclined dumbbell press", set: "3-5", rep: "6-8", tempo: "3111", repos: "0-10", defaultWeight: "15" },
+            { id: "j3_3", name: "B2 Prone, inclined front raise", set: "3-5", rep: "8-10", tempo: "4111", repos: "60-90", defaultWeight: "5" },
+            { id: "j3_4", name: "C Seated, supine grip pulley row", set: "3-4", rep: "6-8", tempo: "3111", repos: "60-75", defaultWeight: "50" },
+            { id: "j3_5", name: "D1 Swissball crunch", set: "2-4", rep: "6-10", tempo: "3111", repos: "0-10" },
+            { id: "j3_6", name: "D2 ATG squat", set: "2-4", rep: "10-30", tempo: "-", repos: "0-10" },
+            { id: "j3_7", name: "D3 Dead hang (suspension)", set: "2-4", rep: "10-30", tempo: "-", repos: "10-30" }
+        ]
+    };
+
+    // Variables du calendrier
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    // Sauvegarde des poids dans le navigateur
+    function saveWeight(id, value) {
+        localStorage.setItem('workout_weight_' + id, value);
+    }
+
+    // Récupération des poids sauvegardés
+    function getWeight(id, defaultWeight = "") {
+        return localStorage.getItem('workout_weight_' + id) || defaultWeight;
+    }
+
+    // Génération du tableau pour un jour donné
+    function renderTable(dayId, exercises) {
+        const tbody = document.getElementById('tbody-' + dayId);
+        let html = '';
+        
+        exercises.forEach(ex => {
+            const savedWeight = getWeight(ex.id, ex.defaultWeight);
+            html += `
+                <tr>
+                    <td><strong>${ex.name}</strong></td>
+                    <td>${ex.set}</td>
+                    <td>${ex.rep}</td>
+                    <td>${ex.tempo}</td>
+                    <td>${ex.repos}</td>
+                    <td>
+                        <input type="text" class="weight-input" 
+                               value="${savedWeight}" 
+                               placeholder="ex: 45"
+                               oninput="saveWeight('${ex.id}', this.value)">
+                    </td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    // Gestion de la navigation entre les jours
+    function showDay(dayNum) {
+        // Cacher tous les jours
+        document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        // Afficher le jour sélectionné
+        document.getElementById('day' + dayNum).classList.add('active');
+        document.querySelectorAll('.tab-btn')[dayNum - 1].classList.add('active');
+    }
+
+    // ===== CALENDRIER =====
+    
+    // Récupérer les jours d'entraînement stockés
+    function getWorkoutDays() {
+        const stored = localStorage.getItem('workout_calendar');
+        return stored ? JSON.parse(stored) : {};
+    }
+
+    // Sauvegarder les jours d'entraînement
+    function saveWorkoutDays(data) {
+        localStorage.setItem('workout_calendar', JSON.stringify(data));
+    }
+
+    // Convertir une date au format YYYY-MM-DD
+    function dateToKey(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    // Convertir une chaîne YYYY-MM-DD en Date
+    function keyToDate(key) {
+        return new Date(key + 'T00:00:00');
+    }
+
+    // Ajouter un jour d'entraînement
+    function addWorkout() {
+        const dateInput = document.getElementById('workout-date').value;
+        const daySelect = document.getElementById('workout-day-select').value;
+
+        if (!dateInput || !daySelect) {
+            alert('Veuillez sélectionner une date et un jour d\'entraînement');
+            return;
+        }
+
+        const workoutDays = getWorkoutDays();
+        workoutDays[dateInput] = daySelect;
+        saveWorkoutDays(workoutDays);
+
+        // Réinitialiser les champs
+        document.getElementById('workout-date').value = '';
+        document.getElementById('workout-day-select').value = '';
+
+        // Redessiner le calendrier
+        renderCalendar();
+    }
+
+    // Naviguer au mois précédent
+    function previousMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    // Naviguer au mois suivant
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    }
+
+    // Dessiner le calendrier
+    function renderCalendar() {
+        const workoutDays = getWorkoutDays();
+        const grid = document.getElementById('calendar-grid');
+        grid.innerHTML = '';
+
+        // Titre du mois
+        const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+                           "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        document.getElementById('calendar-title').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        // En-têtes des jours de la semaine
+        const dayHeaders = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        dayHeaders.forEach(day => {
+            const header = document.createElement('div');
+            header.className = 'calendar-day-header';
+            header.textContent = day;
+            grid.appendChild(header);
+        });
+
+        // Premier jour du mois
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        // Nombre de jours dans le mois
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        // Nombre de jours du mois précédent à afficher
+        const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+        // Jours du mois précédent
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const day = daysInPrevMonth - i;
+            const prevDate = new Date(currentYear, currentMonth - 1, day);
+            const dayElement = createCalendarDay(prevDate, null, true);
+            grid.appendChild(dayElement);
+        }
+
+        // Jours du mois courant
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(currentYear, currentMonth, day);
+            const dateKey = dateToKey(date);
+            const workoutType = workoutDays[dateKey];
+            const dayElement = createCalendarDay(date, workoutType, false);
+            grid.appendChild(dayElement);
+        }
+
+        // Jours du mois suivant
+        const totalCells = grid.children.length - 7; // Moins les en-têtes
+        const remainingCells = 42 - totalCells; // 6 semaines * 7 jours
+        for (let day = 1; day <= remainingCells; day++) {
+            const nextDate = new Date(currentYear, currentMonth + 1, day);
+            const dayElement = createCalendarDay(nextDate, null, true);
+            grid.appendChild(dayElement);
+        }
+    }
+
+    // Créer un élément de jour du calendrier
+    function createCalendarDay(date, workoutType, isOtherMonth) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        
+        if (isOtherMonth) {
+            dayElement.classList.add('other-month');
+        } else {
+            // Ajouter un événement au clic pour supprimer un jour
+            dayElement.onclick = () => {
+                const dateKey = dateToKey(date);
+                if (confirm('Supprimer cet entraînement?')) {
+                    const workoutDays = getWorkoutDays();
+                    delete workoutDays[dateKey];
+                    saveWorkoutDays(workoutDays);
+                    renderCalendar();
+                }
+            };
+        }
+
+        const dayNumber = document.createElement('div');
+        dayNumber.className = 'calendar-day-number';
+        dayNumber.textContent = date.getDate();
+        dayElement.appendChild(dayNumber);
+
+        if (workoutType) {
+            const label = document.createElement('div');
+            label.className = `calendar-day-label ${workoutType}`;
+            label.textContent = workoutType.replace('jour', 'J');
+            dayElement.appendChild(label);
+        }
+
+        return dayElement;
+    }
+
+    // Initialisation
+    window.onload = () => {
+        renderTable('day1', workouts.day1);
+        renderTable('day2', workouts.day2);
+        renderTable('day3', workouts.day3);
+        
+        // Initialiser le calendrier avec la date d'aujourd'hui
+        document.getElementById('workout-date').valueAsDate = new Date();
+        renderCalendar();
+    };
+</script>
+
+  <script src="../js/jquery-3.4.1.min.js"></script>
+  <script src="../js/popper.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/aos.js"></script>
+  <script>
+    // On initialise AOS mais on n'utilise pas custom.js 
+    // pour éviter les comportements automatiques du portfolio.
+    AOS.init({ duration: 800, easing: 'slide', once: true });
+  </script>
+</body>
+</html>
